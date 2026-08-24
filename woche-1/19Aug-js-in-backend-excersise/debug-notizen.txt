@@ -1,0 +1,29 @@
+Debug-Notizen Aufgabe 3
+
+Hilfreiche Logs:
+
+1. "Gesuchte ID" zeigt mir, welche Bestell-ID das Programm sucht.
+2. "Ergebnis aus orderService" zeigt mir, was die Funktion findOrderById zurueckgibt.
+3. "Bestellung wird formatiert" zeigt mir, dass eine Bestellung gefunden wurde und jetzt fuer die Ausgabe vorbereitet wird.
+
+Beobachtung mit gueltiger ID:
+
+Wenn ich eine vorhandene ID benutze, zum Beispiel 2, gibt findOrderById eine Bestellung zurueck.
+Danach wird die Bestellung mit formatOrder formatiert und im Terminal angezeigt.
+
+Beobachtung mit ungueltiger ID:
+
+Wenn ich eine nicht vorhandene ID benutze, zum Beispiel 999, gibt findOrderById undefined zurueck.
+Dann wird keine Bestellung formatiert.
+Stattdessen erscheint im Terminal eine Meldung, dass keine Bestellung mit dieser ID gefunden wurde.
+
+Node-Werkzeug:
+
+Ich habe die Datei app.js mit diesem Befehl geprueft:
+
+node --check app.js
+
+Ergebnis:
+
+Der Befehl hat nichts ausgegeben.
+Das bedeutet, dass Node keine Syntaxfehler in app.js gefunden hat.
