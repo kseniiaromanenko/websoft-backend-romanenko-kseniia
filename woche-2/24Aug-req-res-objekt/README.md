@@ -69,3 +69,58 @@ Ein Request an `GET /support/info` liefert den Status `200 OK` und eine JSON-Ant
 - `req.query` zeigt die Query-Parameter aus der URL nach dem `?`.
 - `req.get("user-agent")` liest einen normalen Header.
 - `req.get("x-student-name")` liest einen selbst gesetzten Header.
+
+## Aufgabe 3: JSON-Antworten mit passenden Statuscodes senden
+
+### Was wurde gemacht?
+
+- Eine kleine Ticket-Datenbasis wurde als Array in `src/main.js` erstellt.
+- Die Route `GET /support/ticket/:id` wurde erstellt.
+- Die `id` wird aus `req.params.id` gelesen und in eine Zahl umgewandelt.
+- Mit `find()` wird das passende Ticket gesucht.
+- Wenn ein Ticket gefunden wird, gibt die API das Ticket als JSON zurueck.
+- Wenn kein Ticket gefunden wird, gibt die API eine JSON-Fehlermeldung mit dem Status `404 Not Found` zurueck.
+
+### Verwendete Befehle
+
+```bash
+npm start
+curl -i http://localhost:3000/support/ticket/1
+curl -i http://localhost:3000/support/ticket/999
+```
+
+Zusaetzlich wurde die Route im Browser getestet:
+
+```text
+http://localhost:3000/support/ticket/1
+```
+
+### Ergebnis bei gueltiger ID
+
+Ein Request an `GET /support/ticket/1` liefert den Status `200 OK` und das gefundene Ticket:
+
+```json
+{
+  "id": 1,
+  "title": "Login problem",
+  "message": "User cannot log in",
+  "email": "user1@example.com"
+}
+```
+
+### Ergebnis bei ungueltiger ID
+
+Ein Request an `GET /support/ticket/999` liefert den Status `404 Not Found` und eine JSON-Fehlermeldung:
+
+```json
+{
+  "error": "Ticket nicht gefunden"
+}
+```
+
+### Wichtige Request- und Response-Eigenschaften
+
+- `req.params.id` liest den dynamischen Teil der URL, zum Beispiel die `1` aus `/support/ticket/1`.
+- `Number(req.params.id)` wandelt die ID von einem String in eine Zahl um.
+- `res.json(...)` sendet eine JSON-Antwort.
+- `res.status(404).json(...)` sendet eine JSON-Antwort mit einem passenden Fehlerstatus.
