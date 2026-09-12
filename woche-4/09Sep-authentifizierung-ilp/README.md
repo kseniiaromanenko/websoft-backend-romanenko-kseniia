@@ -374,3 +374,95 @@ mit einem ungültigen Token antwortet sie mit `401 Unauthorized`.
 `GET /me` ist nur für authentifizierte Benutzer erreichbar. Die Middleware
 identifiziert den Benutzer anhand des Tokens und stellt ihn dem geschützten
 Route-Handler über `req.user` zur Verfügung.
+
+## Aufgabe 5 – Autorisierung über Rollen
+
+Ich habe eine Rollenprüfung für den geschützten Admin-Bereich umgesetzt. Die
+Middleware `requireAdmin` prüft, ob der bereits authentifizierte Benutzer die
+Rolle `admin` besitzt. Zusätzlich wird beim Start des Servers ein Test-Admin
+aus Umgebungsvariablen erstellt.
+
+### Ablauf der Admin-Prüfung
+
+```text
+Bearer-Token prüfen               / проверить Bearer Token
+→ Benutzer in req.user speichern / сохранить пользователя в req.user
+→ Benutzerrolle prüfen           / проверить роль пользователя
+→ Admin-Route freigeben          / разрешить доступ к Admin-маршруту
+```
+
+Die Reihenfolge der Middleware ist wichtig:
+
+```js
+app.get("/admin", requireLogin, requireAdmin, handler);
+```
+
+`requireLogin` wird zuerst ausgeführt und erstellt `req.user`. Erst danach kann
+`requireAdmin` die Eigenschaft `req.user.role` prüfen.
+
+### Verwendet wurden
+
+- `requireLogin` zur Authentifizierung des Benutzers
+- `requireAdmin` zur Prüfung der Rolle `admin`
+- `req.user.role` zum Lesen der Benutzerrolle
+- `403 Forbidden` für einen authentifizierten Benutzer ohne Admin-Rechte
+- `ADMIN_EMAIL` und `ADMIN_PASSWORD` zur Konfiguration des Test-Admins
+- `bcrypt.hash()` zum sicheren Hashen des Admin-Passworts
+- `await createTestAdmin()` zum Erstellen des Admins beim Serverstart
+- `GET /admin` als geschützter Admin-Endpunkt
+
+### Test-Admin
+
+Die Zugangsdaten des Test-Admins werden aus der lokalen `.env`-Datei gelesen.
+Die Datei `.env.example` dokumentiert dafür diese Variablen:
+
+```env
+ADMIN_EMAIL=admin@example.com
+ADMIN_PASSWORD=change-me
+```
+
+Die echte `.env`-Datei wird nicht in Git gespeichert. Der Test-Admin wird im
+In-Memory-Array gespeichert und deshalb nach jedem Serverstart neu erstellt.
+
+### HTTP-Statuscodes
+
+- `200 OK`: Der Benutzer ist authentifiziert und besitzt die Rolle `admin`.
+- `401 Unauthorized`: Der Bearer-Token fehlt oder ist ungültig.
+- `403 Forbidden`: Der Benutzer ist authentifiziert, besitzt aber nicht die
+  Rolle `admin`.
+
+### Test mit Postman
+
+1. Mit `POST /login` als Test-Admin anmelden.
+2. Den zurückgegebenen Token kopieren.
+3. Einen Request an `GET http://localhost:3000/admin` erstellen.
+4. Unter **Authorization** den Typ **Bearer Token** auswählen.
+5. Den Token einfügen und den Request absenden.
+
+Mit dem Admin-Token antwortet die API mit `200 OK`. Mit dem Token eines
+normalen Benutzers antwortet sie mit `403 Forbidden`. Ohne gültigen Token
+antwortet sie mit `401 Unauthorized`.
+
+### Ergebnis
+
+Der Endpunkt `/admin` ist nur für authentifizierte Benutzer mit der Rolle
+`admin` erreichbar. Damit trennt das Projekt Authentication und Authorization:
+Authentication bestimmt, wer der Benutzer ist; Authorization bestimmt, welche
+Aktionen dieser Benutzer ausführen darf.
+
+## Kurzer Projektüberblick
+
+Das Projekt enthält jetzt einen vollständigen einfachen Authentication-Ablauf:
+
+1. `POST /register` erstellt einen Benutzer und speichert nur einen sicheren
+   Passwort-Hash.
+2. `POST /login` prüft das Passwort und erstellt einen zufälligen Login-Token.
+3. `requireLogin` prüft den Bearer-Token und stellt den Benutzer als `req.user`
+   bereit.
+4. `GET /me` gibt Daten des authentifizierten Benutzers zurück.
+5. `requireAdmin` prüft die Rolle des Benutzers.
+6. `GET /admin` ist nur mit der Rolle `admin` erreichbar.
+
+Die Benutzer und Tokens werden absichtlich nur im Arbeitsspeicher gespeichert.
+Nach einem Neustart gehen diese Daten verloren. Das Projekt verwendet einen
+einfachen zufälligen Token und noch keine Datenbank, Session-Cookies oder JWTs.

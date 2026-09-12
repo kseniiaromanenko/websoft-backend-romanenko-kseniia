@@ -154,9 +154,57 @@ function requireLogin(req, res, next) {
   next();
 }
 
+function requireAdmin(req, res, next) {
+  // Die Rolle des authentifizierten Benutzers prüfen. / Проверяем роль аутентифицированного пользователя.
+  if (req.user.role !== "admin") {
+    return res.status(403).json({
+      message: "Zugriff verweigert",
+    });
+  }
+  // Die Anfrage an den nächsten Handler weitergeben. / Передаём запрос следующему обработчику.
+  next();
+}
+
+async function createTestAdmin() {
+  // Admin-Daten aus den Umgebungsvariablen lesen. / Читаем данные администратора из переменных окружения.
+  const email = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+  const password = process.env.ADMIN_PASSWORD;
+
+  // Das Erstellen des Admins überspringen, wenn Daten fehlen. / Пропускаем создание администратора, если данные отсутствуют.
+  if (!email || !password) {
+    console.warn("Test-Admin wurde nicht erstellt");
+    return;
+  }
+
+  // Das Admin-Passwort sicher hashen. / Безопасно хешируем пароль администратора.
+  const passwordHash = await bcrypt.hash(password, 10);
+
+  // Den Test-Admin im In-Memory-Array speichern. / Сохраняем тестового администратора в массиве.
+  users.push({
+    id: crypto.randomUUID(),
+    email,
+    passwordHash,
+    role: "admin",
+  });
+}
+
+await createTestAdmin();
+
 app.get("/me", requireLogin, (req, res) => {
   // Sichere Benutzerdaten zurückgeben. / Возвращаем безопасные данные пользователя.
   return res.status(200).json({
+    user: {
+      id: req.user.id,
+      email: req.user.email,
+      role: req.user.role,
+    },
+  });
+});
+
+app.get("/admin", requireLogin, requireAdmin, (req, res) => {
+  // Den geschützten Admin-Bereich zurückgeben. / Возвращаем защищённый раздел администратора.
+  return res.status(200).json({
+    message: "Willkommen im Admin-Bereich",
     user: {
       id: req.user.id,
       email: req.user.email,
