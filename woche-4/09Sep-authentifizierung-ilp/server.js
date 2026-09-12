@@ -122,6 +122,49 @@ app.post("/login", async (req, res) => {
   });
 });
 
+function requireLogin(req, res, next) {
+  const authHeader = req.headers.authorization;
+
+  // Das Bearer-Format prüfen. / Проверяем формат Bearer.
+  if (!authHeader?.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Bearer-Token erforderlich" });
+  }
+
+  // Das Token aus dem Header extrahieren. / Извлекаем токен из заголовка.
+  const token = authHeader.slice(7);
+
+  // Die Benutzer-ID anhand des Tokens suchen. / Ищем ID пользователя по токену.
+  const userId = tokens.get(token);
+
+  // Den Benutzer anhand seiner ID suchen. / Ищем пользователя по его ID.
+  const user = users.find((user) => user.id === userId);
+
+  // Einen ungültigen Token ablehnen. / Отклоняем недействительный токен.
+  if (!user) {
+    return res.status(401).json({
+      message: "Ungültiger Token",
+    });
+  }
+
+  // Benutzer und Token am Request speichern. / Сохраняем пользователя и токен в объекте запроса.
+  req.user = user;
+  req.token = token;
+
+  // Die Anfrage an den nächsten Handler weitergeben. / Передаём запрос следующему обработчику.
+  next();
+}
+
+app.get("/me", requireLogin, (req, res) => {
+  // Sichere Benutzerdaten zurückgeben. / Возвращаем безопасные данные пользователя.
+  return res.status(200).json({
+    user: {
+      id: req.user.id,
+      email: req.user.email,
+      role: req.user.role,
+    },
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server läuft auf http://localhost:${PORT}`);
 });

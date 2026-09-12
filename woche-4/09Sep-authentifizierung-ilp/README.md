@@ -281,3 +281,96 @@ Ein registrierter Benutzer kann sich mit seiner E-Mail-Adresse und seinem
 Passwort anmelden. Das Passwort wird sicher gegen den vorhandenen Hash geprüft.
 Nach einem erfolgreichen Login erhält der Client ein Token für spätere
 geschützte Requests.
+
+## Aufgabe 4 – Geschützte Route für authentifizierte Benutzer
+
+Ich habe die Authentication-Middleware `requireLogin` und den geschützten
+Endpunkt `GET /me` umgesetzt. Die Middleware liest den Token aus dem
+`Authorization`-Header, prüft ihn und ermittelt den zugehörigen Benutzer. Nur
+bei einem gültigen Token wird der Request an den Handler von `/me`
+weitergegeben.
+
+### Ablauf der Authentifizierung
+
+```text
+Authorization-Header lesen          / прочитать заголовок Authorization
+→ Bearer-Format prüfen              / проверить формат Bearer
+→ Token extrahieren                 / извлечь token
+→ Benutzer-ID in tokens suchen      / найти userId по token
+→ Benutzer in users suchen          / найти пользователя
+→ req.user und req.token setzen     / записать пользователя и token в req
+→ next() aufrufen                   / передать запрос дальше
+→ sichere Benutzerdaten senden      / вернуть безопасные данные пользователя
+```
+
+### Bearer-Token
+
+Der Client sendet den Token in einem HTTP-Header:
+
+```http
+Authorization: Bearer 550e8400-e29b-41d4-a716-446655440000
+```
+
+`Bearer` bezeichnet das Authentifizierungsschema. Danach folgen ein Leerzeichen
+und der eigentliche Token. Mit `startsWith("Bearer ")` wird dieses Format
+geprüft. `slice(7)` entfernt anschließend die sieben Zeichen von `Bearer ` und
+liefert nur den Token.
+
+### Verwendet wurden
+
+- `req.headers.authorization` zum Lesen des Authorization-Headers
+- `startsWith("Bearer ")` zum Prüfen des Bearer-Formats
+- `authHeader?.` zur sicheren Prüfung, auch wenn der Header fehlt
+- `slice(7)` zum Extrahieren des Tokens
+- `tokens.get(token)` zum Ermitteln der gespeicherten Benutzer-ID
+- `users.find()` zum Suchen des zugehörigen Benutzers
+- `req.user` zum Bereitstellen des Benutzers für nachfolgende Handler
+- `req.token` zum Bereitstellen des aktuellen Tokens
+- `next()` zum Fortsetzen der Express-Verarbeitung
+
+### Geschützter Endpunkt
+
+```text
+GET /me → requireLogin → Handler von /me
+```
+
+`requireLogin` wird vor dem eigentlichen Handler ausgeführt. Bei erfolgreicher
+Authentifizierung enthält `req.user` den gefundenen Benutzer. Der Handler gibt
+nur `id`, `email` und `role` zurück, aber keinen Passwort-Hash.
+
+### Test mit curl
+
+Nach Registrierung und Login wird der zurückgegebene Token eingesetzt:
+
+```bash
+curl -i http://localhost:3000/me \
+  -H "Authorization: Bearer HIER_DEN_TOKEN_EINSETZEN"
+```
+
+Beispiel für eine erfolgreiche Antwort:
+
+```json
+{
+  "user": {
+    "id": "...",
+    "email": "anna@example.com",
+    "role": "user"
+  }
+}
+```
+
+### Test mit Postman
+
+1. Als Methode `GET` und als URL `http://localhost:3000/me` auswählen.
+2. Unter **Authorization** den Typ **Bearer Token** auswählen.
+3. Den Token aus der Login-Antwort ohne das Wort `Bearer` einfügen.
+4. Den Request absenden.
+
+Mit einem gültigen Token antwortet die API mit `200 OK`. Ohne Bearer-Token oder
+mit einem ungültigen Token antwortet sie mit `401 Unauthorized`.
+
+### Ergebnis
+
+`GET /me` ist nur für authentifizierte Benutzer erreichbar. Die Middleware
+identifiziert den Benutzer anhand des Tokens und stellt ihn dem geschützten
+Route-Handler über `req.user` zur Verfügung.
