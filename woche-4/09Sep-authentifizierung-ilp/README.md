@@ -113,6 +113,60 @@ Passwort-Hash zurückgegeben. Die Rolle wird auf dem Server standardmäßig als
 `user` festgelegt, damit sich ein Benutzer nicht selbst als Admin registrieren
 kann.
 
+### Test mit curl
+
+Eine erfolgreiche Registrierung kann mit folgendem Request getestet werden:
+
+```bash
+curl -i -X POST http://localhost:3000/register \
+  -H "Content-Type: application/json" \
+  -d '{"email":"  Anna@Example.COM  ","password":"Secret123!"}'
+```
+
+Der Server antwortet mit dem HTTP-Status:
+
+```text
+HTTP/1.1 201 Created
+```
+
+Beispiel für die JSON-Antwort:
+
+```json
+{
+  "message": "Registrierung erfolgreich",
+  "user": {
+    "id": "...",
+    "email": "anna@example.com",
+    "role": "user"
+  }
+}
+```
+
+Die Antwort zeigt, dass die E-Mail-Adresse normalisiert wurde. Das Passwort und
+der Passwort-Hash werden nicht an den Client zurückgegeben.
+
+### Test mit Postman
+
+Die Registrierung kann alternativ in Postman getestet werden:
+
+1. Als Methode `POST` auswählen.
+2. Die URL `http://localhost:3000/register` eintragen.
+3. Unter **Body** die Option **raw** und anschließend **JSON** auswählen.
+4. Folgende Daten in den Request-Body eintragen:
+
+```json
+{
+  "email": "  Anna@Example.COM  ",
+  "password": "Secret123!"
+}
+```
+
+Postman setzt dabei den Header `Content-Type: application/json`. Nach dem
+Absenden wird bei einer erfolgreichen Registrierung der Status `201 Created`
+angezeigt. Wird derselbe Request ohne einen Neustart des Servers erneut
+gesendet, antwortet die API mit `409 Conflict`, weil die E-Mail-Adresse bereits
+registriert ist.
+
 ### Ergebnis
 
 Ein neuer Benutzer kann über `POST /register` registriert werden. Seine
@@ -120,3 +174,110 @@ E-Mail-Adresse wird in normalisierter Form und sein Passwort ausschließlich als
 Hash im In-Memory-Array gespeichert. Fehlende Daten und doppelte
 E-Mail-Adressen werden mit passenden Fehlermeldungen und HTTP-Statuscodes
 behandelt.
+
+## Aufgabe 3 – Login mit Passwortprüfung
+
+Ich habe den Endpunkt `POST /login` umgesetzt. Der Endpunkt sucht den Benutzer
+anhand seiner normalisierten E-Mail-Adresse und prüft das eingegebene Passwort
+mit `bcrypt.compare()`. Bei einem erfolgreichen Login wird ein zufälliges Token
+erstellt, mit der Benutzer-ID verknüpft und an den Client zurückgegeben.
+
+### Ablauf des Logins
+
+```text
+Request-Body lesen                    / получить email и password
+→ E-Mail normalisieren               / нормализовать email
+→ Pflichtfelder prüfen               / проверить наличие данных
+→ Benutzer suchen                    / найти пользователя
+→ Passwort mit dem Hash vergleichen  / сравнить пароль с passwordHash
+→ Token erstellen                    / создать token
+→ Token mit Benutzer-ID speichern    / сохранить token → user.id
+→ Token zurückgeben                  / вернуть token
+```
+
+### Unterschied zwischen Registrierung und Login
+
+| Registrierung                           | Login                                               |
+| --------------------------------------- | --------------------------------------------------- |
+| erstellt einen neuen Benutzer           | sucht einen vorhandenen Benutzer                    |
+| prüft, ob die E-Mail schon existiert    | prüft, ob die Anmeldedaten gültig sind              |
+| verwendet `bcrypt.hash()`               | verwendet `bcrypt.compare()`                        |
+| speichert einen `passwordHash`          | speichert kein neues Passwort und keinen neuen Hash |
+| gibt sichere Benutzerdaten zurück       | erstellt und gibt ein Login-Token zurück            |
+| antwortet erfolgreich mit `201 Created` | antwortet erfolgreich mit `200 OK`                  |
+
+Bei der Registrierung wird aus dem Klartextpasswort einmalig ein Hash für die
+Speicherung erstellt. Beim Login wird das eingegebene Klartextpasswort nicht
+erneut mit `bcrypt.hash()` gehasht. `bcrypt.compare()` prüft es stattdessen
+gegen den bereits gespeicherten Hash und liefert `true` oder `false`.
+
+### Verwendet wurden
+
+- `app.post("/login")` zum Definieren des Login-Endpunkts
+- `users.find()` zum Suchen des Benutzers anhand seiner E-Mail-Adresse
+- `bcrypt.compare(password, user.passwordHash)` zur Passwortprüfung
+- `crypto.randomUUID()` zum Erstellen eines zufälligen Tokens
+- `tokens.set(token, user.id)` zum Verknüpfen des Tokens mit dem Benutzer
+- eine allgemeine Fehlermeldung für eine unbekannte E-Mail und ein falsches
+  Passwort
+
+### HTTP-Statuscodes
+
+- `200 OK`: Der Login war erfolgreich.
+- `400 Bad Request`: E-Mail oder Passwort fehlt.
+- `401 Unauthorized`: Die E-Mail oder das Passwort ist ungültig.
+
+### Test mit curl
+
+Da Benutzer nur im Arbeitsspeicher gespeichert werden, muss nach jedem Neustart
+des Servers zuerst ein Benutzer registriert werden. Danach kann der Login
+getestet werden:
+
+```bash
+curl -i -X POST http://localhost:3000/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"anna@example.com","password":"Secret123!"}'
+```
+
+Beispiel für eine erfolgreiche Antwort:
+
+```json
+{
+  "message": "Login erfolgreich",
+  "token": "550e8400-e29b-41d4-a716-446655440000"
+}
+```
+
+Das Token wird bei jedem erfolgreichen Login neu und zufällig erstellt.
+
+### Test mit Postman
+
+1. Als Methode `POST` auswählen.
+2. Die URL `http://localhost:3000/login` eintragen.
+3. Unter **Body** die Option **raw** und anschließend **JSON** auswählen.
+4. Folgende Anmeldedaten eintragen und den Request absenden:
+
+```json
+{
+  "email": "anna@example.com",
+  "password": "Secret123!"
+}
+```
+
+Bei richtigen Anmeldedaten antwortet die API mit `200 OK` und einem Token. Bei
+einem falschen Passwort oder einer unbekannten E-Mail antwortet sie mit `401
+Unauthorized` und der allgemeinen Meldung `Ungültige Anmeldedaten`.
+
+### Sicherheit
+
+Für eine unbekannte E-Mail-Adresse und ein falsches Passwort wird absichtlich
+dieselbe Fehlermeldung verwendet. Dadurch verrät die API nicht, welche
+E-Mail-Adressen registriert sind. Das zufällige Token wird serverseitig in der
+In-Memory-`Map` gespeichert und ist noch kein JWT.
+
+### Ergebnis
+
+Ein registrierter Benutzer kann sich mit seiner E-Mail-Adresse und seinem
+Passwort anmelden. Das Passwort wird sicher gegen den vorhandenen Hash geprüft.
+Nach einem erfolgreichen Login erhält der Client ein Token für spätere
+geschützte Requests.
