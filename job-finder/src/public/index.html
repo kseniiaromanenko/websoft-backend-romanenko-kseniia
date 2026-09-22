@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini Job Finder</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <h1>Mini Job Finder</h1>
+
+    <section id="auth"></section>
+
+    <form id="search-form">
+      <label>
+        Keywords:
+        <input id="keywords" type="text" placeholder="frontend" required />
+      </label>
+
+      <label>
+        Location:
+        <input id="location" type="text" placeholder="Berlin" required />
+      </label>
+
+      <button type="submit">Search</button>
+      <button id="show-all-button" type="button">Show all jobs</button>
+    </form>
+
+    <p id="message"></p>
+    <button id="show-saved-button" type="button">Show saved jobs</button>
+
+    <section id="saved-jobs-section" hidden>
+      <h2>Saved jobs</h2>
+      <section id="saved-results"></section>
+    </section>
+    <section id="results"></section>
+
+    <script
+      defer
+      crossorigin="anonymous"
+      src="https://thankful-bobcat-932.clerk.accounts.dev/npm/@clerk/ui@1/dist/ui.browser.js"
+    ></script>
+
+    <script
+      defer
+      crossorigin="anonymous"
+      data-clerk-publishable-key="pk_test_dGhhbmtmdWwtYm9iY2F0LTkzMi5jbGVyay5hY2NvdW50cy5kZXYk"
+      src="https://thankful-bobcat-932.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"
+    ></script>
+
+    <script defer src="./auth.js"></script>
+    <script defer src="./app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,182 @@
+[
+  {
+    "externalId": "job-001",
+    "title": "Frontend Developer",
+    "company": "Tech Berlin GmbH",
+    "location": "Berlin",
+    "description": "Development of web applications with JavaScript and React.",
+    "url": "https://example.com/jobs/job-001",
+    "source": "local"
+  },
+  {
+    "externalId": "job-002",
+    "title": "Backend Developer",
+    "company": "CodeWorks GmbH",
+    "location": "Berlin",
+    "description": "Development of REST APIs with Node.js and Express.",
+    "url": "https://example.com/jobs/job-002",
+    "source": "local"
+  },
+  {
+    "externalId": "job-003",
+    "title": "Node.js Developer",
+    "company": "Cloud Systems AG",
+    "location": "Hamburg",
+    "description": "Build scalable backend services with Node.js and MongoDB.",
+    "url": "https://example.com/jobs/job-003",
+    "source": "local"
+  },
+  {
+    "externalId": "job-004",
+    "title": "Junior Frontend Developer",
+    "company": "Web Studio Hamburg",
+    "location": "Hamburg",
+    "description": "Create responsive user interfaces with HTML, CSS and JavaScript.",
+    "url": "https://example.com/jobs/job-004",
+    "source": "local"
+  },
+  {
+    "externalId": "job-005",
+    "title": "Full Stack Developer",
+    "company": "Digital Factory GmbH",
+    "location": "Berlin",
+    "description": "Work on frontend and backend features using React and Node.js.",
+    "url": "https://example.com/jobs/job-005",
+    "source": "local"
+  },
+  {
+    "externalId": "job-006",
+    "title": "Backend Developer",
+    "company": "North Tech Solutions",
+    "location": "Hamburg",
+    "description": "Develop secure APIs with Express, MongoDB and automated tests.",
+    "url": "https://example.com/jobs/job-006",
+    "source": "local"
+  },
+  {
+    "externalId": "job-007",
+    "title": "React Developer",
+    "company": "Creative Apps GmbH",
+    "location": "Munich",
+    "description": "Develop modern frontend components for customer applications.",
+    "url": "https://example.com/jobs/job-007",
+    "source": "local"
+  },
+  {
+    "externalId": "job-008",
+    "title": "Node.js Developer",
+    "company": "API Experts GmbH",
+    "location": "Berlin",
+    "description": "Design and maintain Node.js microservices and REST APIs.",
+    "url": "https://example.com/jobs/job-008",
+    "source": "local"
+  },
+  {
+    "externalId": "job-009",
+    "title": "Java Developer",
+    "company": "Enterprise Software AG",
+    "location": "Frankfurt",
+    "description": "Implement enterprise backend applications with Java and Spring.",
+    "url": "https://example.com/jobs/job-009",
+    "source": "local"
+  },
+  {
+    "externalId": "job-010",
+    "title": "Frontend Developer",
+    "company": "Media Port GmbH",
+    "location": "Hamburg",
+    "description": "Build accessible websites using JavaScript, CSS and React.",
+    "url": "https://example.com/jobs/job-010",
+    "source": "local"
+  },
+  {
+    "externalId": "job-011",
+    "title": "DevOps Engineer",
+    "company": "Reliable Cloud GmbH",
+    "location": "Berlin",
+    "description": "Maintain cloud infrastructure, CI pipelines and container platforms.",
+    "url": "https://example.com/jobs/job-011",
+    "source": "local"
+  },
+  {
+    "externalId": "job-012",
+    "title": "Junior Backend Developer",
+    "company": "StartUp Labs GmbH",
+    "location": "Cologne",
+    "description": "Support backend development with Node.js, Express and PostgreSQL.",
+    "url": "https://example.com/jobs/job-012",
+    "source": "local"
+  },
+  {
+    "externalId": "job-013",
+    "title": "QA Engineer",
+    "company": "Quality First GmbH",
+    "location": "Hamburg",
+    "description": "Plan and automate tests for web and mobile applications.",
+    "url": "https://example.com/jobs/job-013",
+    "source": "local"
+  },
+  {
+    "externalId": "job-014",
+    "title": "TypeScript Developer",
+    "company": "Modern Code GmbH",
+    "location": "Berlin",
+    "description": "Develop frontend and backend applications with TypeScript.",
+    "url": "https://example.com/jobs/job-014",
+    "source": "local"
+  },
+  {
+    "externalId": "job-015",
+    "title": "Data Analyst",
+    "company": "Insight Data AG",
+    "location": "Munich",
+    "description": "Analyze business data and create reports with SQL and Python.",
+    "url": "https://example.com/jobs/job-015",
+    "source": "local"
+  },
+  {
+    "externalId": "job-016",
+    "title": "Express.js Developer",
+    "company": "Server Side GmbH",
+    "location": "Hamburg",
+    "description": "Create backend services and APIs with Express and Node.js.",
+    "url": "https://example.com/jobs/job-016",
+    "source": "local"
+  },
+  {
+    "externalId": "job-017",
+    "title": "UI Designer",
+    "company": "Pixel Design Studio",
+    "location": "Berlin",
+    "description": "Design user interfaces and maintain a digital design system.",
+    "url": "https://example.com/jobs/job-017",
+    "source": "local"
+  },
+  {
+    "externalId": "job-018",
+    "title": "Software Developer",
+    "company": "Green Software GmbH",
+    "location": "Leipzig",
+    "description": "Develop sustainable software solutions for energy management.",
+    "url": "https://example.com/jobs/job-018",
+    "source": "local"
+  },
+  {
+    "externalId": "job-019",
+    "title": "MongoDB Developer",
+    "company": "Data Store GmbH",
+    "location": "Berlin",
+    "description": "Develop data-driven Node.js services using MongoDB and Mongoose.",
+    "url": "https://example.com/jobs/job-019",
+    "source": "local"
+  },
+  {
+    "externalId": "job-020",
+    "title": "Mobile App Developer",
+    "company": "Mobile Future GmbH",
+    "location": "Dresden",
+    "description": "Build cross-platform mobile applications with modern web technologies.",
+    "url": "https://example.com/jobs/job-020",
+    "source": "local"
+  }
+]

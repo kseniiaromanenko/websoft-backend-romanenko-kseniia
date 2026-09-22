@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="350" viewBox="0 0 920 350" role="img" aria-labelledby="title desc">
+  <title id="title">ERD: UserProfile zu SavedJob</title>
+  <desc id="desc">Ein UserProfile kann viele SavedJob Dokumente besitzen. SavedJob.userProfileId verweist auf UserProfile._id.</desc>
+  <style>
+    .title { font: 700 22px Arial, sans-serif; fill: #172554; }
+    .entity { fill: #ffffff; stroke: #2563eb; stroke-width: 2; }
+    .head { fill: #2563eb; }
+    .name { font: 700 18px Arial, sans-serif; fill: #ffffff; }
+    .field { font: 15px Arial, sans-serif; fill: #1f2937; }
+    .key { font: 700 15px Arial, sans-serif; fill: #047857; }
+    .rel { stroke: #475569; stroke-width: 2.5; }
+    .reltext { font: 700 18px Arial, sans-serif; fill: #475569; }
+    .note { font: 14px Arial, sans-serif; fill: #475569; }
+  </style>
+  <rect width="920" height="350" fill="#f8fafc"/>
+  <text x="40" y="38" class="title">Mini Job Finder — Entity Relationship Diagram</text>
+
+  <rect x="55" y="78" width="270" height="210" rx="10" class="entity"/>
+  <rect x="55" y="78" width="270" height="48" rx="10" class="head"/>
+  <text x="82" y="109" class="name">UserProfile</text>
+  <text x="82" y="160" class="key">_id</text>
+  <text x="82" y="188" class="field">clerkUserId</text>
+  <text x="82" y="216" class="field">targetPosition</text>
+  <text x="82" y="244" class="field">skills[]</text>
+  <text x="82" y="272" class="field">location</text>
+
+  <line x1="325" y1="183" x2="595" y2="183" class="rel"/>
+  <text x="357" y="166" class="reltext">1</text>
+  <text x="548" y="166" class="reltext">N</text>
+  <text x="400" y="213" class="note">speichert</text>
+
+  <rect x="595" y="78" width="270" height="210" rx="10" class="entity"/>
+  <rect x="595" y="78" width="270" height="48" rx="10" class="head"/>
+  <text x="622" y="109" class="name">SavedJob</text>
+  <text x="622" y="160" class="key">_id</text>
+  <text x="622" y="188" class="key">userProfileId (FK)</text>
+  <text x="622" y="216" class="field">externalJobId</text>
+  <text x="622" y="244" class="field">title, company, location</text>
+  <text x="622" y="272" class="field">description, url, source, createdAt</text>
+</svg>
+
