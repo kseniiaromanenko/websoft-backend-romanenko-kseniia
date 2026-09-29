@@ -1,5 +1,11 @@
 # Backend-Deployment: Recherche (Teil 1–3)
 
+## Weitere Dokumente
+
+- [Deployment-Blueprint](deployment-blueprint.md) – Schritt-für-Schritt-Anleitung für Render und MongoDB Atlas.
+- [Pre-Deployment-Checkliste](pre-deployment-checklist.md) – Sicherheits-, Datenbank- und Production-Prüfungen vor dem Deployment.
+- [Kurze Zusammenfassung](deployment-summary-de.md) – die wichtigsten Schritte und Punkte auf einen Blick.
+
 # Teil 1: Deployment-Konzepte und Grundlagen
 
 ## 1. Was ist Deployment?
