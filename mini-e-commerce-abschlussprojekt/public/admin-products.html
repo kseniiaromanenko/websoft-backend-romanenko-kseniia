@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Produktverwaltung | Mini Commerce</title>
+
+    <link rel="stylesheet" href="/css/admin-orders.css" />
+  </head>
+
+  <body>
+    <div class="dashboard">
+      <aside class="sidebar" aria-label="Admin-Navigation">
+        <a class="brand" href="/admin-products.html">
+          <span class="brand-mark">M</span>
+          <span>Mini Commerce</span>
+        </a>
+
+        <nav class="nav-links">
+          <a href="/admin-orders.html">Bestellungen</a>
+          <a class="active" href="/admin-products.html">Produkte</a>
+          <a href="/admin-categories.html">Kategorien</a>
+        </nav>
+
+        <div class="sidebar-footer">
+          <p class="user-label">Angemeldet als</p>
+          <p class="admin-email">Administrator</p>
+
+          <button id="logout-button" class="sign-out-button" type="button">
+            Ausloggen
+          </button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="page-header">
+          <div>
+            <p class="eyebrow">ADMIN-BEREICH</p>
+            <h1>Produktverwaltung</h1>
+            <p>Produkte anzeigen und später verwalten.</p>
+          </div>
+
+          <button id="refresh-button" type="button">Aktualisieren</button>
+        </header>
+        <section class="orders-section create-product-section">
+          <div class="section-heading">
+            <div>
+              <h2>Neues Produkt erstellen</h2>
+              <p>Alle Felder außer Bild-URL sind erforderlich.</p>
+            </div>
+          </div>
+
+          <form id="create-product-form" class="product-form">
+            <label>
+              Produktname
+              <input id="product-name" type="text" required />
+            </label>
+
+            <label>
+              Beschreibung
+              <textarea id="product-description" rows="3" required></textarea>
+            </label>
+
+            <label>
+              Preis in Euro
+              <input
+                id="product-price"
+                type="number"
+                min="0.01"
+                step="0.01"
+                required
+              />
+            </label>
+
+            <label>
+              Kategorie
+              <select id="product-category" required>
+                <option value="">Kategorie wird geladen...</option>
+              </select>
+            </label>
+
+            <label>
+              Bild-URL <span>(optional)</span>
+              <input id="product-image-url" type="url" />
+            </label>
+
+            <div class="form-actions">
+              <button
+                id="save-product-button"
+                class="refresh-button"
+                type="submit"
+              >
+                Produkt erstellen
+              </button>
+
+              <button
+                id="cancel-edit-button"
+                class="cancel-button"
+                type="button"
+                hidden
+              >
+                Abbrechen
+              </button>
+            </div>
+          </form>
+
+          <p id="form-message" class="message" hidden></p>
+        </section>
+        <section class="content-card">
+          <h2>Alle Produkte</h2>
+          <p id="message">Produkte werden geladen...</p>
+
+          <div id="products-list" class="products-grid"></div>
+        </section>
+      </main>
+    </div>
+    <script
+      defer
+      crossorigin="anonymous"
+      data-clerk-publishable-key="pk_test_bGlrZWQtY2FsZi05MTIzLmNsZXJrLmFjY291bnRzLmRldiQ"
+      src="https://liked-calf-9123.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"
+      type="text/javascript"
+    ></script>
+    <script src="/js/admin-products.js"></script>
+  </body>
+</html>

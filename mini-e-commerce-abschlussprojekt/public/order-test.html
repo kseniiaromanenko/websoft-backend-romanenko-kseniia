@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bestellung testen – Mini E-Commerce</title>
+  </head>
+  <body>
+    <main>
+      <h1>Bestellung testen</h1>
+
+      <p id="user-info">Sitzung wird geprüft...</p>
+
+      <label for="product-id">Produkt-ID</label>
+      <input id="product-id" type="number" min="1" value="1" />
+
+      <label for="quantity">Menge</label>
+      <input id="quantity" type="number" min="1" value="2" />
+
+      <br /><br />
+
+      <button id="create-order-button">Testbestellung erstellen</button>
+      <button id="show-orders-button">Meine Bestellungen anzeigen</button>
+      <button id="sign-out-button">Ausloggen</button>
+
+      <pre id="result"></pre>
+    </main>
+
+    <script
+      defer
+      crossorigin="anonymous"
+      data-clerk-publishable-key="pk_test_bGlrZWQtY2FsZi05MTIzLmNsZXJrLmFjY291bnRzLmRldiQ"
+      src="https://liked-calf-9123.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"
+      type="text/javascript"
+    ></script>
+
+    <script defer src="/js/order-test.js"></script>
+  </body>
+</html>

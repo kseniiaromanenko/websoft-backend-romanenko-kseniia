@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mini Commerce</title>
+    <link rel="stylesheet" href="/css/store.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="logo" href="/index.html">Mini Commerce</a>
+
+      <nav class="header-actions">
+        <a href="/auth.html">Anmelden</a>
+        <a href="/my-orders.html">Meine Bestellungen</a>
+        <button id="cart-button" type="button">Warenkorb (0)</button>
+      </nav>
+    </header>
+
+    <main class="page-content">
+      <section class="hero">
+        <p class="eyebrow">MINI E-COMMERCE</p>
+        <h1>Unsere Produkte</h1>
+        <p>Wähle ein Produkt für deine Bestellung aus.</p>
+      </section>
+
+      <p id="error-message" class="message error-message" hidden></p>
+
+      <section>
+        <div class="section-header">
+          <h2>Alle Produkte</h2>
+          <p id="product-count">Produkte werden geladen...</p>
+        </div>
+
+        <div id="products-list" class="products-grid"></div>
+      </section>
+    </main>
+    <div id="cart-backdrop" class="cart-backdrop"></div>
+
+    <aside
+      id="cart-section"
+      class="cart-drawer"
+      aria-label="Warenkorb"
+      aria-hidden="true"
+    >
+      <div class="cart-drawer-header">
+        <h2>Dein Warenkorb</h2>
+        <button id="close-cart-button" class="close-cart-button" type="button">
+          ×
+        </button>
+      </div>
+
+      <div id="cart-items" class="cart-items"></div>
+
+      <p class="cart-total">
+        Gesamtpreis: <strong id="cart-total">0.00 €</strong>
+      </p>
+      <p id="checkout-message" class="message" hidden></p>
+
+      <button id="checkout-button" class="checkout-button" type="button">
+        Bestellung aufgeben
+      </button>
+    </aside>
+    <script
+      defer
+      crossorigin="anonymous"
+      data-clerk-publishable-key="pk_test_bGlrZWQtY2FsZi05MTIzLmNsZXJrLmFjY291bnRzLmRldiQ"
+      src="https://liked-calf-9123.clerk.accounts.dev/npm/@clerk/clerk-js@6/dist/clerk.browser.js"
+      type="text/javascript"
+    ></script>
+
+    <script defer src="/js/store.js"></script>
+  </body>
+</html>
