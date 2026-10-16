@@ -7,74 +7,31 @@
     <link rel="stylesheet" href="/css/store.css" />
   </head>
   <body>
-    <div class="dashboard">
-      <aside class="sidebar" aria-label="Admin-Navigation">
-        <a class="brand" href="/admin-orders.html">
-          <span class="brand-mark">M</span>
-          <span>Mini Commerce</span>
-        </a>
+    <header class="site-header">
+      <a class="logo" href="/index.html">Mini Commerce</a>
 
-        <nav class="nav-links">
-          <a href="/admin-orders.html" class="nav-link">
-            <span aria-hidden="true">▤</span>
-            Bestellungen
-          </a>
+      <nav class="header-actions">
+        <a href="/index.html">Produkte</a>
+        <span id="user-email">Wird geladen...</span>
+        <button id="sign-out-button" type="button">Ausloggen</button>
+      </nav>
+    </header>
 
-          <a
-            href="/admin-products.html"
-            class="nav-link active"
-            aria-current="page"
-          >
-            <span aria-hidden="true">▱</span>
-            Produkte
-          </a>
+    <main class="page-content">
+      <section class="hero orders-hero">
+        <p class="eyebrow">MEIN KONTO</p>
+        <h1>Meine Bestellungen</h1>
+        <p>Hier siehst du deine bisherigen Bestellungen.</p>
+      </section>
 
-          <a href="#" class="nav-link">
-            <span aria-hidden="true">◇</span>
-            Kategorien
-          </a>
-        </nav>
+      <p id="error-message" class="message error-message" hidden></p>
 
-        <div class="sidebar-footer">
-          <p class="user-label">Angemeldet als</p>
-          <p class="admin-email">Administrator</p>
+      <p id="empty-message" class="message" hidden>
+        Du hast noch keine Bestellungen.
+      </p>
 
-          <button id="logout-button" class="sign-out-button" type="button">
-            Ausloggen
-          </button>
-        </div>
-      </aside>
-
-      <main class="main-content">
-        <header class="page-header">
-          <div>
-            <p class="eyebrow">ADMIN-BEREICH</p>
-            <h1>Produktverwaltung</h1>
-            <p class="page-description">
-              Produkte anzeigen und später verwalten.
-            </p>
-          </div>
-
-          <button id="refresh-button" class="refresh-button" type="button">
-            <span aria-hidden="true">↻</span>
-            Aktualisieren
-          </button>
-        </header>
-
-        <section class="orders-section">
-          <div class="section-heading">
-            <div>
-              <h2>Alle Produkte</h2>
-              <p>Produkte aus dem Katalog.</p>
-            </div>
-          </div>
-
-          <p id="message" class="message"></p>
-          <div id="products-list"></div>
-        </section>
-      </main>
-    </div>
-
+      <section id="orders-list" class="my-orders-list"></section>
+    </main>
     <script
       defer
       crossorigin="anonymous"
