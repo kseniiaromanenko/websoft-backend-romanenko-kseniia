@@ -149,6 +149,26 @@ const createProductCard = (product) => {
   const card = document.createElement("article");
   card.className = "product-card";
 
+  const imageContainer = document.createElement("div");
+  imageContainer.className = "product-image";
+
+  if (product.imageUrl) {
+    const image = document.createElement("img");
+    image.src = product.imageUrl;
+    image.alt = product.name;
+    image.loading = "lazy";
+
+    image.addEventListener("error", () => {
+      imageContainer.replaceChildren();
+      imageContainer.classList.add("product-image-fallback");
+      imageContainer.textContent = "Kein Bild verfügbar";
+    });
+
+    imageContainer.append(image);
+  } else {
+    imageContainer.classList.add("product-image-fallback");
+    imageContainer.textContent = "Kein Bild verfügbar";
+  }
   const title = document.createElement("h3");
   title.textContent = product.name;
 
@@ -166,7 +186,7 @@ const createProductCard = (product) => {
     addToCart(product);
   });
 
-  card.append(title, description, price, button);
+  card.append(imageContainer, title, description, price, button);
   return card;
 };
 
