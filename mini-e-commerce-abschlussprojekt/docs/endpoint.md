@@ -1,74 +1,208 @@
-# Aktuelle API-Endpunkte
+# API-Endpunkte und Beispiele
 
-http://localhost:3000/api/auth/me
-http://localhost:3000/auth.html
-http://localhost:3000/api/orders
-http://localhost:3000/order-test.html
-http://localhost:3000/admin-orders.html
-http://localhost:3000/admin-products.html
-http://localhost:3000/my-orders.html
-http://localhost:3000/index.html
-http://localhost:3000/api/gibt-es-nicht
+## Base URLs
 
-## Health Check
+Lokal:
 
-- **GET `/api/health`**  
-  Prüft, ob der Express-Server läuft.  
-  Antwort: `{ "status": "ok" }`
+```text
+http://localhost:3000
+```
 
-## Authentifizierung
+Live:
 
-- **GET `/api/auth/me`** 🔒  
-  Gibt den aktuellen angemeldeten Benutzer zurück.  
-  Erstellt oder aktualisiert auch das lokale User-Profil in PostgreSQL.
+```text
+https://websoft-backend-romanenko-kseniia-1.onrender.com
+```
 
-## Kategorien
+## Authentication und Rollen
 
-- **GET `/api/categories`**  
-  Gibt alle Kategorien zurück.
+Öffentliche Endpunkte benötigen keinen Login.
 
-- **POST `/api/categories`** 🔒 ADMIN  
-  Erstellt eine neue Kategorie.
+Geschützte Endpunkte benötigen eine gültige Clerk-Session beziehungsweise
+einen Bearer-Token:
 
-- **PATCH `/api/categories/:id`** 🔒 ADMIN  
-  Ändert den Namen einer Kategorie.
+```http
+Authorization: Bearer <Clerk-JWT>
+```
 
-- **DELETE `/api/categories/:id`** 🔒 ADMIN  
-  Löscht eine Kategorie, wenn sie keine Produkte enthält.
+ADMIN-Endpunkte dürfen nur von Benutzer:innen mit der Rolle `ADMIN` oder
+`SUPER_ADMIN` verwendet werden.
 
-## Produkte
+## Endpunktübersicht
 
-- **GET `/api/products`**  
-  Gibt alle Produkte mit ihrer Kategorie zurück.
+| Methode | Endpoint | Zugriff | Zweck |
+| ------- | -------- | ------- | ----- |
+| GET | `/api/health` | öffentlich | Serverstatus prüfen |
+| GET | `/api/auth/me` | angemeldet | Aktuelles lokales Benutzerprofil abrufen |
+| GET | `/api/categories` | öffentlich | Kategorien abrufen |
+| POST | `/api/categories` | ADMIN | Kategorie erstellen |
+| PATCH | `/api/categories/:id` | ADMIN | Kategorie ändern |
+| DELETE | `/api/categories/:id` | ADMIN | Kategorie löschen |
+| GET | `/api/products` | öffentlich | Produkte abrufen |
+| GET | `/api/products?categoryId=1` | öffentlich | Produkte nach Kategorie filtern |
+| GET | `/api/products/:id` | öffentlich | Einzelnes Produkt abrufen |
+| POST | `/api/products` | ADMIN | Produkt erstellen |
+| PATCH | `/api/products/:id` | ADMIN | Produkt ändern |
+| DELETE | `/api/products/:id` | ADMIN | Produkt löschen |
+| POST | `/api/orders` | angemeldet | Bestellung erstellen |
+| GET | `/api/orders/my` | angemeldet | Eigene Bestellungen abrufen |
+| GET | `/api/orders` | ADMIN | Alle Bestellungen abrufen |
+| PATCH | `/api/orders/:id/status` | ADMIN | Bestellstatus ändern |
 
-- **GET `/api/products?categoryId=1`**  
-  Gibt nur Produkte einer bestimmten Kategorie zurück.
+## Beispiele
 
-- **GET `/api/products/:id`**  
-  Gibt ein einzelnes Produkt mit seiner Kategorie zurück.
+### Serverstatus — `200 OK`
 
-- **POST `/api/products`** 🔒 ADMIN  
-  Erstellt ein neues Produkt.
+```http
+GET /api/health
+```
 
-- **PATCH `/api/products/:id`** 🔒 ADMIN  
-  Ändert ein Produkt.
+```json
+{
+  "status": "ok"
+}
+```
 
-- **DELETE `/api/products/:id`** 🔒 ADMIN  
-  Löscht ein Produkt.
+### Produktliste — `200 OK`
 
-## Bestellungen
+```http
+GET /api/products
+```
 
-- **POST `/api/orders`** 🔒  
-  Erstellt eine Bestellung für den aktuellen angemeldeten Benutzer.  
-  Das Backend prüft Warenkorb, Produkt-ID und Menge.  
-  Der Preis wird aus PostgreSQL gelesen und der Gesamtpreis wird im Backend berechnet.
+```json
+[
+  {
+    "id": 1,
+    "name": "Beispielprodukt",
+    "description": "Produktbeschreibung",
+    "price": "19.99",
+    "imageUrl": null,
+    "categoryId": 1,
+    "category": {
+      "id": 1,
+      "name": "Beispielkategorie"
+    }
+  }
+]
+```
 
-- **GET `/api/orders/my`** 🔒  
-  Gibt nur die Bestellungen des aktuellen angemeldeten Benutzers zurück.
+### Bestellung erstellen — `201 Created`
 
-## Bedeutung der Symbole
+```http
+POST /api/orders
+Authorization: Bearer <Clerk-JWT>
+Content-Type: application/json
+```
 
-- **🔒** = Der Benutzer muss bei Clerk angemeldet sein.
-- **ADMIN** = Nur `ADMIN` und `SUPER_ADMIN` dürfen diesen Endpoint benutzen.
-- Ohne Anmeldung gibt das Backend **401 Nicht autorisiert** zurück.
-- Ohne passende Rolle gibt das Backend **403 Keine Berechtigung** zurück.
+```json
+{
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 2
+    }
+  ]
+}
+```
+
+Der Preis wird nicht im Request gesendet. Das Backend liest den aktuellen
+Produktpreis aus PostgreSQL und berechnet den Gesamtpreis selbst.
+
+```json
+{
+  "id": 15,
+  "userId": 2,
+  "status": "PENDING",
+  "totalPrice": "39.98",
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 2,
+      "unitPrice": "19.99"
+    }
+  ]
+}
+```
+
+### Ungültiger Kategorie-Filter — `400 Bad Request`
+
+```http
+GET /api/products?categoryId=abc
+```
+
+```json
+{
+  "error": "Ungültige Kategorie-ID"
+}
+```
+
+### Fehlende Anmeldung — `401 Unauthorized`
+
+```http
+POST /api/orders
+Content-Type: application/json
+```
+
+```json
+{
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 1
+    }
+  ]
+}
+```
+
+```json
+{
+  "error": "Nicht autorisiert"
+}
+```
+
+### Fehlende ADMIN-Rolle — `403 Forbidden`
+
+Ein angemeldeter USER ohne ADMIN-Rolle versucht, eine Kategorie zu erstellen:
+
+```http
+POST /api/categories
+Authorization: Bearer <Clerk-JWT>
+Content-Type: application/json
+```
+
+```json
+{
+  "name": "Neue Kategorie"
+}
+```
+
+```json
+{
+  "error": "Keine Berechtigung"
+}
+```
+
+### Produkt nicht gefunden — `404 Not Found`
+
+```http
+GET /api/products/999999
+```
+
+```json
+{
+  "error": "Produkt nicht gefunden"
+}
+```
+
+### Kategorie mit Produkten löschen — `409 Conflict`
+
+```http
+DELETE /api/categories/1
+Authorization: Bearer <Clerk-JWT>
+```
+
+```json
+{
+  "error": "Kategorie kann nicht gelöscht werden, solange sie Produkte enthält"
+}
+```

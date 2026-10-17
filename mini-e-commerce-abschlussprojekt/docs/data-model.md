@@ -2,13 +2,16 @@
 
 ## User
 
-| Feld         | Typ      | Eigenschaften                      |
-| ------------ | -------- | ---------------------------------- |
-| id           | Int      | Primary Key, automatisch generiert |
-| email        | String   | eindeutig                          |
-| passwordHash | String   | gehashtes Passwort                 |
-| role         | Role     | Standardwert: USER                 |
-| createdAt    | DateTime | automatisch gesetzt                |
+| Feld      | Typ      | Eigenschaften                      |
+| --------- | -------- | ---------------------------------- |
+| id        | Int      | Primary Key, automatisch generiert |
+| clerkId   | String   | eindeutig, ID des Clerk-Benutzers  |
+| email     | String   | eindeutig                          |
+| role      | Role     | Standardwert: USER                 |
+| createdAt | DateTime | automatisch gesetzt                |
+
+Clerk verwaltet Passwörter und Sessions. In PostgreSQL werden nur
+die Clerk-ID, E-Mail-Adresse, Rolle und Bestellungen gespeichert.
 
 Ein User kann mehrere Bestellungen erstellen.
 
@@ -86,50 +89,5 @@ Ein OrderItem verbindet eine Order mit einem Product.
 
 ## ERD
 
-```mermaid
-erDiagram
-    USER ||--o{ ORDER : erstellt
-    CATEGORY ||--o{ PRODUCT : enthaelt
-    ORDER ||--|{ ORDER_ITEM : enthaelt
-    PRODUCT ||--o{ ORDER_ITEM : wird_verwendet_in
-
-    USER {
-        int id PK
-        string email UK
-        string passwordHash
-        Role role
-        datetime createdAt
-    }
-
-    CATEGORY {
-        int id PK
-        string name UK
-    }
-
-    PRODUCT {
-        int id PK
-        string name
-        string description
-        decimal price
-        string imageUrl
-        int categoryId FK
-        datetime createdAt
-        datetime updatedAt
-    }
-
-    ORDER {
-        int id PK
-        int userId FK
-        OrderStatus status
-        decimal totalPrice
-        datetime createdAt
-    }
-
-    ORDER_ITEM {
-        int id PK
-        int orderId FK
-        int productId FK
-        int quantity
-        decimal unitPrice
-    }
-```
+Das Entity-Relationship-Diagramm befindet sich in
+[erd.md](./erd.md).

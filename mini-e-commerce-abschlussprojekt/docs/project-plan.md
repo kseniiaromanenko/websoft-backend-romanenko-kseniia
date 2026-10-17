@@ -66,9 +66,12 @@ Zod wird für die Validierung von Eingaben verwendet.
 - Order 1:N OrderItem
 - Product 1:N OrderItem
 
-Das ERD und die genauen Tabellenfelder werden in der Planungsphase erstellt.
+Die genauen Tabellenfelder sind in
+[data-model.md](./data-model.md) dokumentiert.
+Das Entity-Relationship-Diagramm befindet sich in
+[erd.md](./erd.md).
 
-## 5. Geplante REST-Endpunkte
+## 5. REST-Endpunkte
 
 ### Authentication mit Clerk
 
@@ -114,15 +117,12 @@ Ohne `categoryId` werden alle Produkte zurückgegeben.
 
 ## 6. Request-, Response- und Error-Beispiele
 
-Diese Beispiele werden vor der Implementierung der jeweiligen API-Routen dokumentiert.
+Konkrete Beispiele für erfolgreiche Requests, JSON-Responses und
+Fehlerantworten befinden sich in
+[endpoint.md](./endpoint.md).
 
-Geplant sind:
-
-- Beispiel für einen erfolgreichen Request
-- Beispiel für eine erfolgreiche JSON-Response
-- Beispiel für ungültige Eingaben
-- Beispiel für Authentication-/Authorization-Fehler
-- passende HTTP-Statuscodes
+Dort werden insbesondere die Statuscodes `200`, `400`, `401`, `403`,
+`404` und `409` dokumentiert.
 
 ## 7. Authentication und Authorization
 
@@ -138,33 +138,23 @@ Geplant sind:
 
 ### Rollen und Berechtigungen
 
-| Aktion                              | USER | ADMIN | SUPER_ADMIN |
-| ----------------------------------- | ---- | ----- | ----------- |
-| Produkte ansehen                    | ✅   | ✅    | ✅          |
-| Bestellungen erstellen              | ✅   | ✅    | ✅          |
-| Produkte und Kategorien verwalten   | ❌   | ✅    | ✅          |
-| Bestellungen verwalten              | ❌   | ✅    | ✅          |
-| Benutzer sperren und entsperren     | ❌   | ❌    | ✅          |
-| ADMIN-Rolle vergeben oder entfernen | ❌   | ❌    | ✅          |
-| Benutzer löschen                    | ❌   | ❌    | ✅          |
+| Aktion                            | USER | ADMIN | SUPER_ADMIN |
+| --------------------------------- | ---- | ----- | ----------- |
+| Produkte ansehen                  | ✅   | ✅    | ✅          |
+| Bestellungen erstellen            | ✅   | ✅    | ✅          |
+| Produkte und Kategorien verwalten | ❌   | ✅    | ✅          |
+| Bestellungen verwalten            | ❌   | ✅    | ✅          |
 
 Die Rolle wird ausschließlich im Backend geprüft. Eine öffentliche Registrierung erstellt immer einen User mit der Rolle `USER`. Der Client darf keine Rolle wie `ADMIN` oder `SUPER_ADMIN` festlegen.
 
-### Benutzerverwaltung durch SUPER_ADMIN
+### Mögliche Erweiterung: Benutzerverwaltung durch SUPER_ADMIN
 
-Geplante Endpunkte:
+Die Rolle `SUPER_ADMIN` ist im Datenmodell vorbereitet und besitzt
+aktuell dieselben Rechte wie `ADMIN`.
 
-```text
-GET    /api/admin/users
-PATCH  /api/admin/users/:id/role
-POST   /api/admin/users/:id/ban
-POST   /api/admin/users/:id/unban
-DELETE /api/admin/users/:id
-```
-
-Nur SUPER_ADMIN darf Rollen und Benutzer verwalten. Ein SUPER_ADMIN darf sich nicht selbst sperren oder löschen. Der letzte SUPER_ADMIN darf nicht entfernt oder herabgestuft werden.
-
-Clerk verwaltet die Anmeldung und kann Benutzer sperren oder entsperren. PostgreSQL speichert die projektspezifische Rolle und die Bestellhistorie. Für den Shop wird zunächst das Sperren bevorzugt, damit Bestellungen erhalten bleiben.
+Eine spätere Erweiterung könnte eine eigene Benutzerverwaltung enthalten,
+zum Beispiel Rollen ändern, Benutzer sperren oder löschen. Diese
+Funktionen gehören nicht zum MVP und sind nicht implementiert.
 
 Die Zugriffsrechte werden im Backend geprüft, nicht nur im Frontend.
 
@@ -175,7 +165,7 @@ Die Zugriffsrechte werden im Backend geprüft, nicht nur im Frontend.
 - Der Server verwendet Preis- und Produktdaten aus der Datenbank.
 - Der Gesamtpreis wird im Backend berechnet.
 - Ein Benutzer darf nur seine eigenen Bestellungen sehen.
-- Admin-Funktionen sind nur für ADMIN verfügbar.
+- Admin-Funktionen sind nur für ADMIN und SUPER_ADMIN verfügbar.
 - Bestellstatus muss einen erlaubten Wert haben.
 
 ## 9. Security
@@ -269,7 +259,3 @@ Wenn die Zeit knapp wird, werden keine zusätzlichen Features begonnen. Die Anfo
 - höchste Priorität für morgen
 
 Wenn etwas nicht abgeschlossen wurde, wird es ehrlich erwähnt und der nächste Schritt beschrieben.
-
-```
-
-```

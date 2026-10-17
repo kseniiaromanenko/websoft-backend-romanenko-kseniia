@@ -2,6 +2,26 @@
 
 Ein Full-Stack-Mini-E-Commerce-Projekt mit Node.js, Express, PostgreSQL, Prisma und Clerk.
 
+## Live-Demo
+
+Die veröffentlichte Anwendung ist hier erreichbar:
+
+https://websoft-backend-romanenko-kseniia-1.onrender.com
+
+Hinweis: Der kostenlose Render-Service kann nach längerer Inaktivität
+einschlafen. Der erste Aufruf kann deshalb bis zu etwa einer Minute dauern.
+
+## Autorin
+
+Kseniia Romanenko
+
+## Projektdokumentation
+
+- [Projektplan](./docs/project-plan.md)
+- [Datenmodell](./docs/data-model.md)
+- [Entity-Relationship-Diagramm (ERD)](./docs/erd.md)
+- [API-Endpunkte und Beispiele](./docs/endpoint.md)
+
 ## Funktionen
 
 ### USER
@@ -23,15 +43,43 @@ Ein Full-Stack-Mini-E-Commerce-Projekt mit Node.js, Express, PostgreSQL, Prisma 
 
 ## Technologien
 
+### Backend und API
+
 - Node.js
-- Express
+- Express.js
+- REST API mit JSON
+- dotenv für Environment Variables
+
+### Datenbank
+
 - PostgreSQL
 - Prisma ORM
-- Clerk für Authentifizierung und Sessions
+- Neon für die bereitgestellte PostgreSQL-Datenbank
+
+### Authentication und Sicherheit
+
+- Clerk für Registrierung, Login und Sessions
 - Zod für Request-Validierung
-- Helmet, CORS und Rate Limiting
-- Vitest und Supertest für Integrationstests
-- HTML, CSS und JavaScript
+- Helmet für HTTP-Sicherheits-Header
+- CORS für kontrollierten Zugriff vom Frontend
+- express-rate-limit für Rate Limiting
+
+### Testing
+
+- Vitest
+- Supertest für Integrationstests
+
+### Frontend
+
+- HTML
+- CSS
+- Vanilla JavaScript
+- Browser API `localStorage` für den Warenkorb
+
+### Deployment und Versionskontrolle
+
+- Render für das Deployment des Node.js-/Express-Web-Service
+- Git und GitHub für Versionskontrolle und automatisches Deployment
 
 ## Installation
 
@@ -100,17 +148,19 @@ Aktuelle Integrationstests prüfen:
 | Methode | Endpoint                 | Beschreibung                            |
 | ------- | ------------------------ | --------------------------------------- |
 | GET     | `/api/health`            | Health Check                            |
-| GET     | `/api/products`          | Alle Produkte                           |
+| GET     | `/api/auth/me`           | Aktuellen eingeloggten Benutzer abrufen |
+| GET     | `/api/products`          | Alle Produkte abrufen                   |
+| GET     | `/api/products/:id`      | Einzelnes Produkt mit Kategorie abrufen |
 | POST    | `/api/products`          | Produkt erstellen, nur ADMIN            |
-| PATCH   | `/api/products/:id`      | Produkt ändern, nur ADMIN               |
+| PATCH   | `/api/products/:id`      | Produkt bearbeiten, nur ADMIN           |
 | DELETE  | `/api/products/:id`      | Produkt löschen, nur ADMIN              |
-| GET     | `/api/categories`        | Alle Kategorien                         |
+| GET     | `/api/categories`        | Alle Kategorien abrufen                 |
 | POST    | `/api/categories`        | Kategorie erstellen, nur ADMIN          |
-| PATCH   | `/api/categories/:id`    | Kategorie ändern, nur ADMIN             |
+| PATCH   | `/api/categories/:id`    | Kategorie bearbeiten, nur ADMIN         |
 | DELETE  | `/api/categories/:id`    | Kategorie löschen, nur ADMIN            |
 | POST    | `/api/orders`            | Bestellung erstellen, angemeldeter USER |
-| GET     | `/api/orders/my`         | Eigene Bestellungen                     |
-| GET     | `/api/orders`            | Alle Bestellungen, nur ADMIN            |
+| GET     | `/api/orders/my`         | Eigene Bestellungen abrufen             |
+| GET     | `/api/orders`            | Alle Bestellungen abrufen, nur ADMIN    |
 | PATCH   | `/api/orders/:id/status` | Bestellstatus ändern, nur ADMIN         |
 
 ## Sicherheit
