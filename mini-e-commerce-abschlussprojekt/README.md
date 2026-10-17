@@ -173,6 +173,14 @@ Aktuelle Integrationstests prüfen:
 - Helmet, CORS und Rate Limiting schützen die API zusätzlich.
 - Produkte oder Kategorien mit bestehenden Bestell- bzw. Produktbeziehungen können nicht einfach gelöscht werden.
 
+### Nicht verwendete Sicherheitsmaßnahmen
+
+- Eine eigene Passwortspeicherung oder Passwort-Hashing ist nicht nötig,
+  weil Clerk Passwörter, Login und Sessions verwaltet.
+- Die Anwendung verarbeitet keine Datei-Uploads. Produktbilder werden nur
+  als URL gespeichert; deshalb ist keine serverseitige Datei-Upload-Prüfung
+  erforderlich.
+
 ## Mögliche Erweiterungen
 
 - Produktbilder hochladen
