@@ -384,14 +384,16 @@ tbody tr:hover {
   margin-bottom: 28px;
 }
 
-.product-form {
+.product-form,
+.category-form {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
   padding: 24px;
 }
 
-.product-form label {
+.product-form label,
+.category-form label {
   display: grid;
   gap: 7px;
   color: var(--slate-700);
@@ -406,7 +408,8 @@ tbody tr:hover {
 
 .product-form input,
 .product-form textarea,
-.product-form select {
+.product-form select,
+.category-form input {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid var(--slate-300);
@@ -477,11 +480,13 @@ tbody tr:hover {
   background: #dbeafe;
 }
 @media (max-width: 620px) {
-  .product-form {
+  .product-form,
+  .category-form {
     grid-template-columns: 1fr;
   }
 
-  .product-form button {
+  .product-form button,
+  .category-form button {
     width: 100%;
     justify-content: center;
   }

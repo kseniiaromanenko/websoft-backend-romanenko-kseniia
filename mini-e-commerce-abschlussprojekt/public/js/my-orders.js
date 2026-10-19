@@ -7,6 +7,7 @@ window.addEventListener("load", async () => {
   }
 
   const userEmail = document.getElementById("user-email");
+  const adminLink = document.getElementById("admin-link");
   const signOutButton = document.getElementById("sign-out-button");
   const ordersList = document.getElementById("orders-list");
   const errorMessage = document.getElementById("error-message");
@@ -65,6 +66,10 @@ window.addEventListener("load", async () => {
       }
 
       userEmail.textContent = profile.email;
+
+      if (profile.role === "ADMIN" || profile.role === "SUPER_ADMIN") {
+        adminLink.hidden = false;
+      }
 
       const response = await fetch("/api/orders/my", {
         headers: {

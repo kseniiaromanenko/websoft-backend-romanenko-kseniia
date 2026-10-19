@@ -11,15 +11,28 @@
   <body>
     <div class="dashboard">
       <aside class="sidebar" aria-label="Admin-Navigation">
-        <a class="brand" href="/admin-products.html">
+        <a class="brand" href="/admin-orders.html">
           <span class="brand-mark">M</span>
           <span>Mini Commerce</span>
         </a>
 
         <nav class="nav-links">
-          <a href="/admin-orders.html">Bestellungen</a>
-          <a class="active" href="/admin-products.html">Produkte</a>
-          <a href="/admin-categories.html">Kategorien</a>
+          <a href="/index.html" class="nav-link">
+            <span aria-hidden="true">←</span>
+            Zum Shop
+          </a>
+          <a href="/admin-orders.html" class="nav-link">
+            <span aria-hidden="true">▤</span>
+            Bestellungen
+          </a>
+          <a class="nav-link active" href="/admin-products.html" aria-current="page">
+            <span aria-hidden="true">▱</span>
+            Produkte
+          </a>
+          <a href="/admin-categories.html" class="nav-link">
+            <span aria-hidden="true">◇</span>
+            Kategorien
+          </a>
         </nav>
 
         <div class="sidebar-footer">
@@ -37,10 +50,13 @@
           <div>
             <p class="eyebrow">ADMIN-BEREICH</p>
             <h1>Produktverwaltung</h1>
-            <p>Produkte anzeigen und später verwalten.</p>
+            <p class="page-description">Produkte anzeigen und verwalten.</p>
           </div>
 
-          <button id="refresh-button" type="button">Aktualisieren</button>
+          <button id="refresh-button" class="refresh-button" type="button">
+            <span aria-hidden="true">↻</span>
+            Aktualisieren
+          </button>
         </header>
         <section class="orders-section create-product-section">
           <div class="section-heading">
