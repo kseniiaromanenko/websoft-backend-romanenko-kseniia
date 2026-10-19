@@ -50,6 +50,41 @@ body {
   text-decoration: none;
 }
 
+.header-actions .admin-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 11px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  color: #1d4ed8;
+  background: #eff6ff;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.header-actions .admin-link[hidden],
+.header-actions .sign-out-button[hidden] {
+  display: none;
+}
+
+.header-actions .admin-link:hover {
+  border-color: #93c5fd;
+  background: #dbeafe;
+}
+
+.header-actions .sign-out-button {
+  padding: 8px 11px;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+  background: #fff;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.header-actions .sign-out-button:hover {
+  background: #fef2f2;
+}
+
 .header-actions button,
 .product-card button {
   padding: 10px 14px;

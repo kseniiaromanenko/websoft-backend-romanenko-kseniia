@@ -11,8 +11,14 @@
       <a class="logo" href="/index.html">Mini Commerce</a>
 
       <nav class="header-actions">
-        <a href="/auth.html">Anmelden</a>
+        <a id="auth-link" href="/auth.html">Anmelden</a>
         <a href="/my-orders.html">Meine Bestellungen</a>
+        <a id="admin-link" class="admin-link" href="/admin-orders.html" hidden>
+          Admin-Bereich
+        </a>
+        <button id="sign-out-button" class="sign-out-button" type="button" hidden>
+          Ausloggen
+        </button>
         <button id="cart-button" type="button">Warenkorb (0)</button>
       </nav>
     </header>

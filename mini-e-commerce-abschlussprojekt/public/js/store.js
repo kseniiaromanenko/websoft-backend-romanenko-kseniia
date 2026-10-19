@@ -2,6 +2,9 @@ const productsList = document.getElementById("products-list");
 const productCount = document.getElementById("product-count");
 const errorMessage = document.getElementById("error-message");
 const cartButton = document.getElementById("cart-button");
+const authLink = document.getElementById("auth-link");
+const adminLink = document.getElementById("admin-link");
+const signOutButton = document.getElementById("sign-out-button");
 const cartSection = document.getElementById("cart-section");
 const cartBackdrop = document.getElementById("cart-backdrop");
 const closeCartButton = document.getElementById("close-cart-button");
@@ -213,6 +216,44 @@ const loadProducts = async () => {
     productCount.textContent = "Produkte konnten nicht geladen werden.";
   }
 };
+
+const updateUserNavigation = async () => {
+  try {
+    await Clerk.load();
+
+    if (!Clerk.user || !Clerk.session) {
+      return;
+    }
+
+    authLink.hidden = true;
+    signOutButton.hidden = false;
+
+    signOutButton.addEventListener("click", async () => {
+      await Clerk.signOut();
+      window.location.href = "/index.html";
+    });
+
+    const token = await Clerk.session.getToken();
+    const response = await fetch("/api/auth/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      return;
+    }
+
+    const currentUser = await response.json();
+
+    if (currentUser.role === "ADMIN" || currentUser.role === "SUPER_ADMIN") {
+      adminLink.hidden = false;
+    }
+  } catch (error) {
+    console.error("Admin-Navigation konnte nicht geladen werden.", error);
+  }
+};
+
 const checkout = async () => {
   if (cart.length === 0) {
     checkoutMessage.textContent = "Der Warenkorb ist leer.";
@@ -282,6 +323,7 @@ const checkout = async () => {
 
 updateCartButton();
 loadProducts();
+updateUserNavigation();
 
 const openCart = () => {
   renderCart();

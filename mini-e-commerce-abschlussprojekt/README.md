@@ -11,6 +11,20 @@ https://websoft-backend-romanenko-kseniia-1.onrender.com
 Hinweis: Der kostenlose Render-Service kann nach längerer Inaktivität
 einschlafen. Der erste Aufruf kann deshalb bis zu etwa einer Minute dauern.
 
+## Seiten der Anwendung
+
+| Seite | URL | Zugriff |
+| ----- | --- | ------- |
+| Produktkatalog | [Öffnen](https://websoft-backend-romanenko-kseniia-1.onrender.com/) | öffentlich |
+| Anmeldung und Registrierung | [Öffnen](https://websoft-backend-romanenko-kseniia-1.onrender.com/auth.html) | öffentlich |
+| Meine Bestellungen | [Öffnen](https://websoft-backend-romanenko-kseniia-1.onrender.com/my-orders.html) | angemeldete USER |
+| Admin: Bestellungen | [Öffnen](https://websoft-backend-romanenko-kseniia-1.onrender.com/admin-orders.html) | ADMIN / SUPER_ADMIN |
+| Admin: Produkte | [Öffnen](https://websoft-backend-romanenko-kseniia-1.onrender.com/admin-products.html) | ADMIN / SUPER_ADMIN |
+| Admin: Kategorien | [Öffnen](https://websoft-backend-romanenko-kseniia-1.onrender.com/admin-categories.html) | ADMIN / SUPER_ADMIN |
+
+Die ADMIN-Seiten prüfen die Rolle im Frontend für eine benutzerfreundliche
+Navigation. Die eigentliche Zugriffskontrolle findet zusätzlich im Backend statt.
+
 ## Autorin
 
 Kseniia Romanenko
